@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.4.2.RELEASE</version>
+		<version>1.2.5.RELEASE</version>
 	</parent>
 
 	<properties>
@@ -22,86 +22,75 @@
 	</properties>
 
 	<dependencies>
-
-		<!-- This is a web application -->
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
-		<!-- Tomcat embedded container -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-config</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet.jsp</groupId>
-			<artifactId>jsp-api</artifactId>
-			<version>${jsp.api.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>jstl</groupId>
-			<artifactId>jstl</artifactId>
-			<version>${jstl.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>2.7.4</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.fasterxml.jackson.core</groupId>
-					<artifactId>jackson-core</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.fasterxml.jackson.core</groupId>
-					<artifactId>jackson-annotations</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-			<version>2.7.4</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-annotations</artifactId>
-			<version>2.7.4</version>
-		</dependency>
-
 	</dependencies>
 
+	<repositories>
+		<repository>
+			<id>spring-releases</id>
+			<name>Spring Releases</name>
+			<url>https://repo.spring.io/libs-release</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-releases</id>
+			<name>Spring Releases</name>
+			<url>https://repo.spring.io/libs-release</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+
+	<!-- <parent> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-parent</artifactId> 
+		<version>1.4.2.RELEASE</version> </parent> <properties> <java.version>1.8</java.version> 
+		<spring.version>4.2.3.RELEASE</spring.version> <spring.security.version>4.2.3.RELEASE</spring.security.version> 
+		<servlet.api.version>3.1.0</servlet.api.version> <jsp.api.version>2.2</jsp.api.version> 
+		<jstl.version>1.2</jstl.version> </properties> <dependencies> This is a web 
+		application <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-web</artifactId> 
+		</dependency> Tomcat embedded container <dependency> <groupId>org.springframework.boot</groupId> 
+		<artifactId>spring-boot-starter-tomcat</artifactId> <scope>provided</scope> 
+		</dependency> <dependency> <groupId>org.springframework</groupId> <artifactId>spring-core</artifactId> 
+		</dependency> <dependency> <groupId>org.springframework</groupId> <artifactId>spring-web</artifactId> 
+		</dependency> <dependency> <groupId>org.springframework</groupId> <artifactId>spring-webmvc</artifactId> 
+		</dependency> <dependency> <groupId>org.springframework.security</groupId> 
+		<artifactId>spring-security-web</artifactId> </dependency> <dependency> <groupId>org.springframework.security</groupId> 
+		<artifactId>spring-security-config</artifactId> </dependency> <dependency> 
+		<groupId>javax.servlet</groupId> <artifactId>javax.servlet-api</artifactId> 
+		</dependency> <dependency> <groupId>javax.servlet.jsp</groupId> <artifactId>jsp-api</artifactId> 
+		<version>${jsp.api.version}</version> </dependency> <dependency> <groupId>jstl</groupId> 
+		<artifactId>jstl</artifactId> <version>${jstl.version}</version> </dependency> 
+		<dependency> <groupId>com.fasterxml.jackson.core</groupId> <artifactId>jackson-databind</artifactId> 
+		<version>2.7.4</version> <exclusions> <exclusion> <groupId>com.fasterxml.jackson.core</groupId> 
+		<artifactId>jackson-core</artifactId> </exclusion> <exclusion> <groupId>com.fasterxml.jackson.core</groupId> 
+		<artifactId>jackson-annotations</artifactId> </exclusion> </exclusions> </dependency> 
+		<dependency> <groupId>com.fasterxml.jackson.core</groupId> <artifactId>jackson-core</artifactId> 
+		<version>2.7.4</version> </dependency> <dependency> <groupId>com.fasterxml.jackson.core</groupId> 
+		<artifactId>jackson-annotations</artifactId> <version>2.7.4</version> </dependency> 
+		</dependencies> -->
 	<build>
 		<finalName>SpringMVCSecruity</finalName>
 		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
