@@ -4,28 +4,38 @@ import org.springframework.http.HttpStatus;
 
 public class MetaData {
 
-	 private HttpStatus message;
-	    private String code;
+	private HttpStatus httpStatus;
+	private String code;
+	private String message;
 
-	    public String getInfo() {
-	        return this.code;
-	    }
+	public String getInfo() {
+		return this.code;
+	}
 
-	    public void setInfo(String info) {
-	        this.code = info;
-	    }
+	public void setInfo(String info) {
+		this.code = info;
+	}
 
-	    public HttpStatus getHttpStatus() {
-	        return this.message;
-	    }
+	public HttpStatus getHttpStatus() {
+		return httpStatus;
+	}
 
-	    public void setHttpStatus(HttpStatus message) {
-	        this.message = message;
-	    }
+	public void setHttpStatus(HttpStatus httpStatus) {
+		this.httpStatus = httpStatus;
+	}
 
-	    @Override
-	    public String toString() {
-	        return "MetaData [message=" + this.message + ", code=" + this.code + "]";
-	    }
-	
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	@Override
+	public String toString() {
+		return "MetaData [httpStatus=" + httpStatus + ", code=" + code + ", message=" + message + "]";
+	}
+
+
 }
