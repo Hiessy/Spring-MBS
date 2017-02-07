@@ -16,11 +16,11 @@ public class ServerResponse<T> implements Serializable {
 		super();
 	}
 
-	public MetaData getUserMetaData() {
+	public MetaData getMetaData() {
 		return metaData;
 	}
 
-	public void setUserMetaData(MetaData metaData) {
+	public void setMetaData(MetaData metaData) {
 		this.metaData = metaData;
 	}
 
@@ -28,7 +28,7 @@ public class ServerResponse<T> implements Serializable {
 		return data;
 	}
 
-	public void setUserData(T data) {
+	public void setData(T data) {
 		this.data = data;
 	}
 

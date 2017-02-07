@@ -1,0 +1,29 @@
+h2.app-title {
+    padding: 12px 0px 0px 0px;
+    margin: 0px;
+    color: azure;
+}
+
+.page-content {
+    padding-top: 30px;
+}
+
+form {
+    padding-top: 20px;
+}
+
+.page-content {
+    min-height: 0;
+}
+
+.table-row {
+    padding-top: 20px;
+}
+
+.breadcrumbs .breadcrumb>li>a {
+    color: #FFF;
+}
+
+.form-md-floating-label > label {
+    padding-left: 15px;
+}

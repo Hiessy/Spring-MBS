@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html>
+    <!-- BEGIN HEAD -->
+    <head>
+        <meta charset="utf-8" />
+        <title>Downloader Web</title>
+        <link href="http://fonts.googleapis.com/css?family=Oswald:400,300,700" rel="stylesheet" type="text/css" />
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+        <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
+        <link href="assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/layouts/layout5/css/layout.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
+        <link href="assets/global/plugins/bootstrap-toastr/toastr.min.css" rel="stylesheet" type="text/css" />
+        <link href="customAssets/custom.css" rel="stylesheet" type="text/css" />
+        <link href="padrones.css" rel="stylesheet" type="text/css" />
+        <link rel="shortcut icon" href="favicon.ico" />
+        <script>
+            var userData = JSON.parse(localStorage.getItem("userData"));
+            if (!userData) {
+                window.location = 'login.html'; 
+            }
+        </script>
+    </head>
+    <body class="page-header-fixed page-sidebar-closed-hide-logo">
+        <div class="wrapper">
+            <header class="page-header">
+                <nav class="navbar mega-menu" role="navigation">
+                    <div class="container-fluid">
+                        <div class="clearfix navbar-fixed-top">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="toggle-icon">
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </span>
+                            </button>
+                            <h2 class="app-title">Aplication</h2>
+                            <div class="topbar-actions">
+                                <div class="btn-group-img btn-group">
+                                    <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                        <span id="userBarName"></span>
+                                    </button>
+                                </div>
+                                <button type="button" class="quick-sidebar-toggler" id="logout">
+                                    <i class="icon-logout"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="nav-collapse collapse navbar-collapse navbar-responsive-collapse">
+                            <ul class="nav navbar-nav">
+                                <li id="visibilityUsuarios" class="dropdown dropdown-fw" style="display: none">
+                                    <a id="tabUsuarios" class="text-uppercase">
+                                        <i class="icon-user"></i> Usuarios </a>
+                                </li>
+                                <li class="dropdown dropdown-fw">
+                                    <a id="tabDescargas" class="text-uppercase">
+                                        <i class="icon-cloud-download"></i> Descargas </a>
+                                </li>
+                                <li class="dropdown dropdown-fw active open selected">
+                                    <a href="javascript:;" class="text-uppercase">
+                                        <i class="icon-layers"></i> Padrones </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+            <div class="container-fluid">
+                <div class="page-content">
+                    <div class="breadcrumbs">
+                        <h1>Padrones</h1>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="portlet light bordered">
+                                <div class="portlet-title">
+                                    <div class="caption font-green-sharp">
+                                        <i class="fa fa-search font-green-sharp"></i>
+                                        <span class="caption-subject bold uppercase"> Buscar según CUIT</span>
+                                        <span class="caption-helper">En todos los padrones</span>
+                                    </div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group form-md-line-input has-info form-md-floating-label">
+                                                        <div class="input-group input-group-sm">
+                                                            <div class="input-group-control">
+                                                                <input type="text" id="inputCuit" class="form-control input-sm edited">
+                                                                <label>Ingrese número de CUIT</label>
+                                                            </div>
+                                                            <span class="input-group-btn btn-right">
+                                                                <button class="btn green-haze" id="inputCuitBtn" type="button">Buscar</button>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="afip">
+                                <div class="portlet-title">
+                                    <div class="caption">AFIP</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nombre">
+                                            <label for="form_control_1">Nombre</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="imp_ganan">
+                                            <label for="form_control_1">Impuesto Ganancias</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="imp_iva">
+                                            <label for="form_control_1">Impuesto IVA</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="monotributo">
+                                            <label for="form_control_1">Monotributo</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="integ_soc">
+                                            <label for="form_control_1">Integ Soc</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="empleador">
+                                            <label for="form_control_1">Empleador</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="act_mono">
+                                            <label for="form_control_1">Act Monotributo</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fecha_modif">
+                                            <label for="form_control_1">Fecha Modificado</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="agip">
+                                <div class="portlet-title">
+                                    <div class="caption">AGIP</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nombre">
+                                            <label for="form_control_1">Nombre</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="txtFechaPublic">
+                                            <label for="form_control_1">Fecha publicación</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="txtFechaDesde">
+                                            <label for="form_control_1">Fecha desde</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="txtFechaHasta">
+                                            <label for="form_control_1">Fecha hasta</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="tipoContri">
+                                            <label for="form_control_1">Tipo contribuyente</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="alta">
+                                            <label for="form_control_1">Alta</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cambio">
+                                            <label for="form_control_1">Cambio</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="alicuota">
+                                            <label for="form_control_1">Alicuota</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="alicuotaAux">
+                                            <label for="form_control_1">Alicuota auxiliar</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="grpPerce">
+                                            <label for="form_control_1">Grupo percepción</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="grpReten">
+                                            <label for="form_control_1">Grupo retención</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaModificado">
+                                            <label for="form_control_1">Fecha de Modificado</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="apocrifos">
+                                <div class="portlet-title">
+                                    <div class="caption">Apócrifos</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaDesde">
+                                            <label for="form_control_1">Fecha Desde</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaDePublicacion">
+                                            <label for="form_control_1">Fecha de Publicación</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="observacion">
+                                            <label for="form_control_1">Observación</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaModificado">
+                                            <label for="form_control_1">fecha de Modificado</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="arbaIibb">
+                                <div class="portlet-title">
+                                    <div class="caption">ARBA Ingresos Brutos</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="regimen">
+                                            <label for="form_control_1">Régimen</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaPublic">
+                                            <label for="form_control_1">Fecha de Publicación</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaDesde">
+                                            <label for="form_control_1">Fecha Desde</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaHasta">
+                                            <label for="form_control_1">Fecha Hasta</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="tipoContri">
+                                            <label for="form_control_1">Tipo Contribuyente</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="marcaAlta">
+                                            <label for="form_control_1">Marca Alta</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="alicuota">
+                                            <label for="form_control_1">Alicuota</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cambioAlicuota">
+                                            <label for="form_control_1">Cambio Alicuota</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="numeroDeGrupo">
+                                            <label for="form_control_1">Número de Grupo</label>
+                                        </div>
+                                         <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaModificado">
+                                            <label for="form_control_1">Fecha Modificado</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="cabaAgrecau">
+                                <div class="portlet-title">
+                                    <div class="caption">CABA AGRECAU</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="ag">
+                                            <label for="form_control_1">AG</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="dv">
+                                            <label for="form_control_1">DV</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nombre">
+                                            <label for="form_control_1">Nombre</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="norma">
+                                            <label for="form_control_1">Norma</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="vigencia">
+                                            <label for="form_control_1">Vigencia</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaModificado">
+                                            <label for="form_control_1">Fecha de Modificado</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="cabaArt31">
+                                <div class="portlet-title">
+                                    <div class="caption">CABA Artículo 31</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nombre">
+                                            <label for="form_control_1">Nombre</label>
+                                        </div>
+                                         <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaModificado">
+                                            <label for="form_control_1">Fecha de Modificado</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="cabaArt33">
+                                <div class="portlet-title">
+                                    <div class="caption">CABA Artículo 33</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="sol">
+                                            <label for="form_control_1">Sol</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nombre">
+                                            <label for="form_control_1">Nombre</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="calle">
+                                            <label for="form_control_1">Calle</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="puerta">
+                                            <label for="form_control_1">Puerta</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="piso">
+                                            <label for="form_control_1">Piso</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="dpto">
+                                            <label for="form_control_1">Departamento</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="torre">
+                                            <label for="form_control_1">Torre</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="barrio">
+                                            <label for="form_control_1">Barrio</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="codigoPostal">
+                                            <label for="form_control_1">Código Postal</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="anexo">
+                                            <label for="form_control_1">Anexo</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="cabaMagsup">
+                                <div class="portlet-title">
+                                    <div class="caption">CABA MAGSUP</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nombre">
+                                            <label for="form_control_1">Nombre</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaDePublicacion">
+                                            <label for="form_control_1">Fecha de Publicación</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaDesde">
+                                            <label for="form_control_1">Fecha Desde</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaHasta">
+                                            <label for="form_control_1">Fecha Hasta</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="tipoDeContribuyente">
+                                            <label for="form_control_1">Tipo de Contribuyente</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="marcaAlta">
+                                            <label for="form_control_1">Marca Alta</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="marcaCambio">
+                                            <label for="form_control_1">Marca Cambio</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="alicuotaPercepcion">
+                                            <label for="form_control_1">Alicuota Percepción</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="alicuotaAuxiliar">
+                                            <label for="form_control_1">Alicuota Auxiliar</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="grupoPercepcion">
+                                            <label for="form_control_1">Grupo Percecpción</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="grupoRetencion">
+                                            <label for="form_control_1">Grupo Retención</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaModificado">
+                                            <label for="form_control_1">Fecha de Modificado</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="cabaRg816">
+                                <div class="portlet-title">
+                                    <div class="caption">CABA RG 816</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nombre">
+                                            <label for="form_control_1">Nombre</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaDePublicacion">
+                                            <label for="form_control_1">Fecha de Publicación</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaDesde">
+                                            <label for="form_control_1">Fecha Desde</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaHasta">
+                                            <label for="form_control_1">Fecha Hasta</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="tipoDeContribuyente">
+                                            <label for="form_control_1">Tipo de Contribuyente</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="marcaAlta">
+                                            <label for="form_control_1">Marca Alta</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="marcaAlicuota">
+                                            <label for="form_control_1">Marca Alicuota</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="alicuotaPercepcion">
+                                            <label for="form_control_1">Alicuota Percepción</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="alicuotaRetencion">
+                                            <label for="form_control_1">Alicuota Retención</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="grupoPercepcion">
+                                            <label for="form_control_1">Grupo Percecpción</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="grupoRetencion">
+                                            <label for="form_control_1">Grupo Retención</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaModificado">
+                                            <label for="form_control_1">Fecha de Modificado</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="comarbitral">
+                                <div class="portlet-title">
+                                    <div class="caption">COMARBITRAL</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nroiibb">
+                                            <label for="form_control_1">Número Ingresos Britos</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nombre">
+                                            <label for="form_control_1">Nombre</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fecha">
+                                            <label for="form_control_1">Fecha</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="cordobaCmPercep">
+                                <div class="portlet-title">
+                                    <div class="caption">Córdoba CM Percepción</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nombre">
+                                            <label for="form_control_1">Nombre</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nroDeInscripto">
+                                            <label for="form_control_1">Número de Inscripto</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="cordobaExcluidoPercep">
+                                <div class="portlet-title">
+                                    <div class="caption">Córdoba Excluido Percepción</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nombre">
+                                            <label for="form_control_1">Nombre</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nroDeInscripto">
+                                            <label for="form_control_1">Número de Inscripto</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="cordobaLocalesPercep">
+                                <div class="portlet-title">
+                                    <div class="caption">Córdoba Locales Percepción</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nombre">
+                                            <label for="form_control_1">Nombre</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nroDeInscripto">
+                                            <label for="form_control_1">Número de Inscripto</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="cordobaMontoFijoReten">
+                                <div class="portlet-title">
+                                    <div class="caption">Córdoba monto fijo retención</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline"> 
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nombre">
+                                            <label for="form_control_1">Nombre</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nroDeInscripto">
+                                            <label for="form_control_1">Número de Inscripto</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="cordobaPasibleReten">
+                                <div class="portlet-title">
+                                    <div class="caption">Córdoba pasibles retención</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nombre">
+                                            <label for="form_control_1">Nombre</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nroDeInscripto">
+                                            <label for="form_control_1">Número de Inscripto</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="cordobaSujetoNoPasiblesPercep">
+                                <div class="portlet-title">
+                                    <div class="caption">Córdoba sujetos no pasibles percepción</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nombre">
+                                            <label for="form_control_1">Nombre</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nroDeInscripto">
+                                            <label for="form_control_1">Número de Inscripto</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaDesde">
+                                            <label for="form_control_1">Fecha Desde</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaHasta">
+                                            <label for="form_control_1">Fecha Hasta</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="embargos">
+                                <div class="portlet-title">
+                                    <div class="caption">Embargos</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nombre">
+                                            <label for="form_control_1">Nombre</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaDePublicacion">
+                                            <label for="form_control_1">Fecha de Publicación</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="numero">
+                                            <label for="form_control_1">Número</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaModificado">
+                                            <label for="form_control_1">Fecha de Modificado</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="nombresAfip">
+                                <div class="portlet-title">
+                                    <div class="caption">Nombres AFIP</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nombre">
+                                            <label for="form_control_1">Nombre</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="rg17">
+                                <div class="portlet-title">
+                                    <div class="caption">RG 17</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nombre">
+                                            <label for="form_control_1">Nombre</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaDesde">
+                                            <label for="form_control_1">Fecha Desde</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaHasta">
+                                            <label for="form_control_1">Fecha Hasta</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="porcentaje">
+                                            <label for="form_control_1">Porcentaje</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="resolucion">
+                                            <label for="form_control_1">Resolución</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="tipoDeCertificado">
+                                            <label for="form_control_1">Tipo de Certificado</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaModificado">
+                                            <label for="form_control_1">Fecha Modificado</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="rg18">
+                                <div class="portlet-title">
+                                    <div class="caption">RG 18</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nombre">
+                                            <label for="form_control_1">Nombre</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaDesde">
+                                            <label for="form_control_1">Fecha Desde</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaHasta">
+                                            <label for="form_control_1">Fecha Hasta</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="inciso">
+                                            <label for="form_control_1">Inciso</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaModificado">
+                                            <label for="form_control_1">Fecha Modificado</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="rg830">
+                                <div class="portlet-title">
+                                    <div class="caption">RG 830</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="numeroDeCertificado">
+                                            <label for="form_control_1">Número de Certificado</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="periodoFiscal">
+                                            <label for="form_control_1">Período Fiscal</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="porcentaje">
+                                            <label for="form_control_1">Porcentaje</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="resolucionGeneral">
+                                            <label for="form_control_1">Resolución General</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="estado">
+                                            <label for="form_control_1">Estado</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="numeroDeLegajo">
+                                            <label for="form_control_1">Número de Legajo</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaDesde">
+                                            <label for="form_control_1">Fecha Desde</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaDePublicacion">
+                                            <label for="form_control_1">Fecha de Publicación</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaHasta">
+                                            <label for="form_control_1">Fecha de Hasta</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaModificado">
+                                            <label for="form_control_1">Fecha de Modificado</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="rg1904">
+                                <div class="portlet-title">
+                                    <div class="caption">RG 1904</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">                                    
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="numeroCertificado">
+                                            <label for="form_control_1">Número Certificado</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="periodoFiscal">
+                                            <label for="form_control_1">Período Fiscal</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="porcentaje">
+                                            <label for="form_control_1">Porcentaje</label>
+                                        </div>
+
+                                         <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="resolucionGeneral">
+                                            <label for="form_control_1">Resolución Genearal</label>
+                                        </div>
+
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="estado">
+                                            <label for="form_control_1">Estado</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaDesde">
+                                            <label for="form_control_1">Fecha Desde</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaHasta">
+                                            <label for="form_control_1">Fecha Hasta</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaModificado">
+                                            <label for="form_control_1">Fecha de Modificado</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="rg2681">
+                                <div class="portlet-title">
+                                    <div class="caption">RG 2681</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="tipoSujeto">
+                                            <label for="form_control_1">Tipo Sujeto</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="codigoEstado">
+                                            <label for="form_control_1">Código Estado</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="descripcionEstado">
+                                            <label for="form_control_1">Descripción Estado</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaEmision">
+                                            <label for="form_control_1">Fecha Emisión</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaAdmision">
+                                            <label for="form_control_1">Fecha Admisión</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="autorizaDeduccion">
+                                            <label for="form_control_1">Autoriza Deducción</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="declaracionesJuradas">
+                                            <label for="form_control_1">Declaraciones Juradas</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="codigoInciso">
+                                            <label for="form_control_1">Código Inciso</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaDesde">
+                                            <label for="form_control_1">Fecha Desde</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaHasta">
+                                            <label for="form_control_1">Fecha Hasta</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="numeroDeCertificado">
+                                            <label for="form_control_1">Número de Certificado</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="ordenJudicial">
+                                            <label for="form_control_1">Orden Judicial</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaArchivo">
+                                            <label for="form_control_1">Fecha Archivo</label>
+                                        </div>
+                                         <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaModificado">
+                                            <label for="form_control_1">Fecha de Modificado</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="rg3692">
+                                <div class="portlet-title">
+                                    <div class="caption">RG 3692</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nombre">
+                                            <label for="form_control_1">Nombre</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="registro">
+                                            <label for="form_control_1">Registro</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="situacion">
+                                            <label for="form_control_1">Situación</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaDePublicacion">
+                                            <label for="form_control_1">Fecha de Publicación</label>
+                                        </div>
+                                         <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaModificacion">
+                                            <label for="form_control_1">Fecha de Modificacion</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="saltaActivos">
+                                <div class="portlet-title">
+                                    <div class="caption">Salta Activos</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nombre">
+                                            <label for="form_control_1">Nombre</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="indicador">
+                                            <label for="form_control_1">Indicador</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="numero">
+                                            <label for="form_control_1">Número</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="otros">
+                                            <label for="form_control_1">Otros</label>
+                                        </div>
+                                         <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaModificado">
+                                            <label for="form_control_1">Fecha de Modificado</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="saltaExentos">
+                                <div class="portlet-title">
+                                    <div class="caption">Salta Exentos</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nombre">
+                                            <label for="form_control_1">Nombre</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="indicador">
+                                            <label for="form_control_1">Indicador</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="numero">
+                                            <label for="form_control_1">Número</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaModificado">
+                                            <label for="form_control_1">Fecha de Modificado</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="sanjuanRs">
+                                <div class="portlet-title">
+                                    <div class="caption">San Juan RS</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">                                    
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nroDeInscripto">
+                                            <label for="form_control_1">Número de Inscripto</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="razonSocial">
+                                            <label for="form_control_1">Razón Social</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="regimen">
+                                            <label for="form_control_1">Régimen</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaModificado">
+                                            <label for="form_control_1">Fecha de Modificado</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="sanjuan">
+                                <div class="portlet-title">
+                                    <div class="caption">San Juan</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">                                    
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nombre">
+                                            <label for="form_control_1">Nombre</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="nroDeInscripto">
+                                            <label for="form_control_1">Número de Inscripto</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaModificado">
+                                            <label for="form_control_1">Fecha de Modificado</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" display="">
+                        <div class="col-md-12">
+                            <div class="portlet box blue-hoki" id="tucumanContribuyente">
+                                <div class="portlet-title">
+                                    <div class="caption">Tucumán Contribuyentes</div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form role="form" class="div-fields" display="inline">
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="cuit">
+                                            <label for="form_control_1">CUIT</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="exento">
+                                            <label for="form_control_1">Exento</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="convenio">
+                                            <label for="form_control_1">Convenio</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaDesde">
+                                            <label for="form_control_1">Fecha Desde</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="fechaHasta">
+                                            <label for="form_control_1">Fecha Hasta</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input form-md-floating-label col-md-6 col-lg-4">
+                                            <input type="text" class="form-control edited" readonly="" id="razonSocial">
+                                            <label for="form_control_1">Razón Social</label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                    <form role="form" class="div-date" display="none">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="copyright">2016 © ...</p>
+            </div>
+        </div>
+        <script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/datatables/datatables.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js" type="text/javascript"></script>
+        <script src="basic.js" type="text/javascript"></script>
+        <script src="padrones.js" type="text/javascript"></script>
+    </body>
+</html>
